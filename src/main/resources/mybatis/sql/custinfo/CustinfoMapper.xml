@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yonyou.iuap.cust.dao.CustinfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.yonyou.iuap.cust.entity.Custinfo">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+                <result column="cust_name"  property="cust_name" />
+                <result column="cust_sex"  property="cust_sex" />
+                <result column="cust_num"  property="cust_num" />
+                <result column="phone"  property="phone" />
+            <result column="dr" property="dr" />
+            <result column="ts" property="ts" />
+            <result column="last_modified" property="lastModified" />
+            <result column="last_modify_user" property="lastModifyUser" />
+            <result column="create_time" property="createTime" />
+            <result column="create_user" property="createUser" />
+
+        
+        
+
+    </resultMap>
+
+
+    <select id="selectAllByPage"  resultMap="BaseResultMap">
+        SELECT  t.* FROM cust_info t WHERE 1 =1 and t.dr=0
+
+        <if test="condition != null">
+            <if test="condition.searchMap.id!=null and condition.searchMap.id!='' ">
+                and t.ID = #{condition.searchMap.id}
+            </if>
+
+                        <if test="condition.searchMap.cust_name!=null and condition.searchMap.cust_name!='' ">
+                            and t.cust_name LIKE CONCAT( CONCAT('%', #{condition.searchMap.cust_name}),'%')
+
+
+
+                    </if>
+
+
+
+                        <if test="condition.searchMap.cust_sex!=null and condition.searchMap.cust_sex!='' ">
+                            and t.cust_sex = #{condition.searchMap.cust_sex}
+
+
+
+                    </if>
+
+
+
+                        <if test="condition.searchMap.cust_num!=null and condition.searchMap.cust_num!='' ">
+                            and t.cust_num = #{condition.searchMap.cust_num}
+
+
+
+                    </if>
+
+
+
+                        <if test="condition.searchMap.phone!=null and condition.searchMap.phone!='' ">
+                            and t.phone = #{condition.searchMap.phone}
+
+
+
+                    </if>
+
+
+        </if>
+        order by ts desc
+        <if test="page != null">
+            <if test="page.sort!=null">
+
+                <foreach collection="page.sort" item="item" separator=" ">
+                    ,${item.property}  ${item.direction}
+                </foreach>
+            </if>
+        </if>
+    </select>
+</mapper>
